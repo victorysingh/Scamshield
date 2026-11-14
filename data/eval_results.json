@@ -1,0 +1,488 @@
+{
+  "set_size": 45,
+  "scam_count": 30,
+  "genuine_count": 15,
+  "detected": 28,
+  "false_alarms": 1,
+  "detection_rate": 93.3,
+  "false_alarm_rate": 6.7,
+  "note": "Synthetic test set only. Do not claim production accuracy.",
+  "results": [
+    {
+      "id": "S01",
+      "label": "scam",
+      "scam_type": "bank_kyc",
+      "predicted_risk": "high",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": true,
+      "signals": [
+        "otp_or_pin_request",
+        "urgency_language"
+      ]
+    },
+    {
+      "id": "S02",
+      "label": "scam",
+      "scam_type": "bank_kyc",
+      "predicted_risk": "high",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": true,
+      "signals": [
+        "otp_or_pin_request",
+        "urgency_language"
+      ]
+    },
+    {
+      "id": "S03",
+      "label": "scam",
+      "scam_type": "bank_kyc",
+      "predicted_risk": "high",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": true,
+      "signals": [
+        "urgency_language",
+        "lookalike_link"
+      ]
+    },
+    {
+      "id": "S04",
+      "label": "scam",
+      "scam_type": "bank_kyc",
+      "predicted_risk": "high",
+      "predicted_scam_type": "unknown",
+      "flagged": true,
+      "signals": [
+        "otp_or_pin_request"
+      ]
+    },
+    {
+      "id": "S05",
+      "label": "scam",
+      "scam_type": "bank_kyc",
+      "predicted_risk": "high",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": true,
+      "signals": [
+        "otp_or_pin_request",
+        "urgency_language",
+        "arrest_or_seizure_threat"
+      ]
+    },
+    {
+      "id": "S06",
+      "label": "scam",
+      "scam_type": "bank_kyc",
+      "predicted_risk": "high",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": true,
+      "signals": [
+        "urgency_language",
+        "lookalike_link"
+      ]
+    },
+    {
+      "id": "S07",
+      "label": "scam",
+      "scam_type": "courier_customs",
+      "predicted_risk": "medium",
+      "predicted_scam_type": "courier_customs",
+      "flagged": true,
+      "signals": [
+        "lookalike_link"
+      ]
+    },
+    {
+      "id": "S08",
+      "label": "scam",
+      "scam_type": "courier_customs",
+      "predicted_risk": "high",
+      "predicted_scam_type": "courier_customs",
+      "flagged": true,
+      "signals": [
+        "urgency_language",
+        "arrest_or_seizure_threat"
+      ]
+    },
+    {
+      "id": "S09",
+      "label": "scam",
+      "scam_type": "courier_customs",
+      "predicted_risk": "medium",
+      "predicted_scam_type": "courier_customs",
+      "flagged": true,
+      "signals": [
+        "lookalike_link"
+      ]
+    },
+    {
+      "id": "S10",
+      "label": "scam",
+      "scam_type": "courier_customs",
+      "predicted_risk": "high",
+      "predicted_scam_type": "courier_customs",
+      "flagged": true,
+      "signals": [
+        "urgency_language",
+        "arrest_or_seizure_threat"
+      ]
+    },
+    {
+      "id": "S11",
+      "label": "scam",
+      "scam_type": "fake_official",
+      "predicted_risk": "high",
+      "predicted_scam_type": "fake_official",
+      "flagged": true,
+      "signals": [
+        "urgency_language",
+        "arrest_or_seizure_threat"
+      ]
+    },
+    {
+      "id": "S12",
+      "label": "scam",
+      "scam_type": "fake_official",
+      "predicted_risk": "high",
+      "predicted_scam_type": "fake_official",
+      "flagged": true,
+      "signals": [
+        "arrest_or_seizure_threat"
+      ]
+    },
+    {
+      "id": "S13",
+      "label": "scam",
+      "scam_type": "fake_official",
+      "predicted_risk": "medium",
+      "predicted_scam_type": "fake_official",
+      "flagged": true,
+      "signals": [
+        "urgency_language"
+      ]
+    },
+    {
+      "id": "S14",
+      "label": "scam",
+      "scam_type": "fake_official",
+      "predicted_risk": "high",
+      "predicted_scam_type": "fake_official",
+      "flagged": true,
+      "signals": [
+        "arrest_or_seizure_threat",
+        "remote_access_request"
+      ]
+    },
+    {
+      "id": "S15",
+      "label": "scam",
+      "scam_type": "fake_official",
+      "predicted_risk": "high",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": true,
+      "signals": [
+        "urgency_language",
+        "arrest_or_seizure_threat"
+      ]
+    },
+    {
+      "id": "S16",
+      "label": "scam",
+      "scam_type": "fake_official",
+      "predicted_risk": "high",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": true,
+      "signals": [
+        "remote_access_request"
+      ]
+    },
+    {
+      "id": "S17",
+      "label": "scam",
+      "scam_type": "prize",
+      "predicted_risk": "medium",
+      "predicted_scam_type": "prize",
+      "flagged": true,
+      "signals": [
+        "urgency_language"
+      ]
+    },
+    {
+      "id": "S18",
+      "label": "scam",
+      "scam_type": "prize",
+      "predicted_risk": "medium",
+      "predicted_scam_type": "prize",
+      "flagged": true,
+      "signals": [
+        "urgency_language"
+      ]
+    },
+    {
+      "id": "S19",
+      "label": "scam",
+      "scam_type": "prize",
+      "predicted_risk": "medium",
+      "predicted_scam_type": "prize",
+      "flagged": true,
+      "signals": [
+        "urgency_language"
+      ]
+    },
+    {
+      "id": "S20",
+      "label": "scam",
+      "scam_type": "prize",
+      "predicted_risk": "medium",
+      "predicted_scam_type": "prize",
+      "flagged": true,
+      "signals": [
+        "urgency_language"
+      ]
+    },
+    {
+      "id": "S21",
+      "label": "scam",
+      "scam_type": "investment",
+      "predicted_risk": "low",
+      "predicted_scam_type": "investment",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "S22",
+      "label": "scam",
+      "scam_type": "investment",
+      "predicted_risk": "medium",
+      "predicted_scam_type": "investment",
+      "flagged": true,
+      "signals": [
+        "urgency_language"
+      ]
+    },
+    {
+      "id": "S23",
+      "label": "scam",
+      "scam_type": "investment",
+      "predicted_risk": "medium",
+      "predicted_scam_type": "investment",
+      "flagged": true,
+      "signals": [
+        "lookalike_link"
+      ]
+    },
+    {
+      "id": "S24",
+      "label": "scam",
+      "scam_type": "investment",
+      "predicted_risk": "low",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "S25",
+      "label": "scam",
+      "scam_type": "bank_kyc",
+      "predicted_risk": "high",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": true,
+      "signals": [
+        "otp_or_pin_request",
+        "urgency_language"
+      ]
+    },
+    {
+      "id": "S26",
+      "label": "scam",
+      "scam_type": "courier_customs",
+      "predicted_risk": "medium",
+      "predicted_scam_type": "courier_customs",
+      "flagged": true,
+      "signals": [
+        "lookalike_link"
+      ]
+    },
+    {
+      "id": "S27",
+      "label": "scam",
+      "scam_type": "fake_official",
+      "predicted_risk": "high",
+      "predicted_scam_type": "fake_official",
+      "flagged": true,
+      "signals": [
+        "arrest_or_seizure_threat"
+      ]
+    },
+    {
+      "id": "S28",
+      "label": "scam",
+      "scam_type": "prize",
+      "predicted_risk": "high",
+      "predicted_scam_type": "prize",
+      "flagged": true,
+      "signals": [
+        "urgency_language",
+        "lookalike_link"
+      ]
+    },
+    {
+      "id": "S29",
+      "label": "scam",
+      "scam_type": "investment",
+      "predicted_risk": "high",
+      "predicted_scam_type": "investment",
+      "flagged": true,
+      "signals": [
+        "remote_access_request"
+      ]
+    },
+    {
+      "id": "S30",
+      "label": "scam",
+      "scam_type": "bank_kyc",
+      "predicted_risk": "high",
+      "predicted_scam_type": "unknown",
+      "flagged": true,
+      "signals": [
+        "remote_access_request"
+      ]
+    },
+    {
+      "id": "G01",
+      "label": "genuine",
+      "scam_type": "bank_statement",
+      "predicted_risk": "low",
+      "predicted_scam_type": "unknown",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G02",
+      "label": "genuine",
+      "scam_type": "bank_statement",
+      "predicted_risk": "low",
+      "predicted_scam_type": "unknown",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G03",
+      "label": "genuine",
+      "scam_type": "otp_notice",
+      "predicted_risk": "high",
+      "predicted_scam_type": "unknown",
+      "flagged": true,
+      "signals": [
+        "otp_or_pin_request"
+      ]
+    },
+    {
+      "id": "G04",
+      "label": "genuine",
+      "scam_type": "otp_notice",
+      "predicted_risk": "low",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G05",
+      "label": "genuine",
+      "scam_type": "delivery",
+      "predicted_risk": "low",
+      "predicted_scam_type": "unknown",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G06",
+      "label": "genuine",
+      "scam_type": "delivery",
+      "predicted_risk": "low",
+      "predicted_scam_type": "courier_customs",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G07",
+      "label": "genuine",
+      "scam_type": "delivery",
+      "predicted_risk": "low",
+      "predicted_scam_type": "investment",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G08",
+      "label": "genuine",
+      "scam_type": "bank_statement",
+      "predicted_risk": "low",
+      "predicted_scam_type": "bank_kyc",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G09",
+      "label": "genuine",
+      "scam_type": "bank_statement",
+      "predicted_risk": "low",
+      "predicted_scam_type": "unknown",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G10",
+      "label": "genuine",
+      "scam_type": "service",
+      "predicted_risk": "low",
+      "predicted_scam_type": "unknown",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G11",
+      "label": "genuine",
+      "scam_type": "service",
+      "predicted_risk": "low",
+      "predicted_scam_type": "unknown",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G12",
+      "label": "genuine",
+      "scam_type": "service",
+      "predicted_risk": "low",
+      "predicted_scam_type": "unknown",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G13",
+      "label": "genuine",
+      "scam_type": "otp_notice",
+      "predicted_risk": "low",
+      "predicted_scam_type": "unknown",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G14",
+      "label": "genuine",
+      "scam_type": "bank_statement",
+      "predicted_risk": "low",
+      "predicted_scam_type": "unknown",
+      "flagged": false,
+      "signals": []
+    },
+    {
+      "id": "G15",
+      "label": "genuine",
+      "scam_type": "delivery",
+      "predicted_risk": "low",
+      "predicted_scam_type": "courier_customs",
+      "flagged": false,
+      "signals": []
+    }
+  ]
+}
