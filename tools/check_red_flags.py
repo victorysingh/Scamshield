@@ -61,6 +61,31 @@ _SIGNALS: list[tuple[str, re.Pattern[str], str]] = [
 ]
 
 
+# Genuine bank OTP SMSes say "Do not share this OTP" — that is a warning, not a
+# request, so an OTP match directly preceded by a negation must not count.
+# Only filler words may sit between the negation and the verb ("never ask you
+# to share"); otherwise "Do not ignore this message, enter your PIN" would hide.
+_NEGATION_BEFORE = re.compile(
+    r"\b(do not|don't|dont|never|not to|must not|should not)\s+"
+    r"((ask|asks|asked|request|requests|you|to|ever|will)\s+){0,3}$",
+    re.IGNORECASE,
+)
+
+
+def _matches(name: str, pattern: re.Pattern[str], message: str) -> bool:
+    """True if *pattern* matches, ignoring negated OTP warnings."""
+    if name != "otp_or_pin_request":
+        return pattern.search(message) is not None
+    # Restart one character after each rejected match: finditer would skip
+    # overlapping matches, so "Do not tell anyone. Send the OTP" would be missed.
+    pos = 0
+    while (m := pattern.search(message, pos)) is not None:
+        if not _NEGATION_BEFORE.search(message[: m.start()]):
+            return True
+        pos = m.start() + 1
+    return False
+
+
 def check_red_flags(message: str) -> dict[str, Any]:
     """
     Scan *message* for known scam red-flag signals.
@@ -84,7 +109,7 @@ def check_red_flags(message: str) -> dict[str, Any]:
 
     found: list[dict[str, str]] = []
     for name, pattern, reason in _SIGNALS:
-        if pattern.search(message):
+        if _matches(name, pattern, message):
             found.append({"name": name, "reason": reason})
 
     return {

@@ -30,9 +30,15 @@ def health() -> Any:
 
 @app.post("/analyse")
 def analyse() -> Any:
-    data: dict = request.get_json(silent=True) or {}
-    message: str = data.get("message", "").strip()
-    language: str = data.get("language", "english").strip().lower()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        data = {}
+    raw_message = data.get("message")
+    raw_language = data.get("language")
+
+    # Non-string input from a client must return 400, not crash with a 500
+    message: str = raw_message.strip() if isinstance(raw_message, str) else ""
+    language: str = raw_language.strip().lower() if isinstance(raw_language, str) else "english"
 
     if not message:
         return jsonify({"error": "message is required"}), 400

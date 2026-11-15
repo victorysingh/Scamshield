@@ -3,9 +3,9 @@
   "scam_count": 30,
   "genuine_count": 15,
   "detected": 28,
-  "false_alarms": 1,
+  "false_alarms": 0,
   "detection_rate": 93.3,
-  "false_alarm_rate": 6.7,
+  "false_alarm_rate": 0.0,
   "note": "Synthetic test set only. Do not claim production accuracy.",
   "results": [
     {
@@ -48,7 +48,7 @@
       "id": "S04",
       "label": "scam",
       "scam_type": "bank_kyc",
-      "predicted_risk": "high",
+      "predicted_risk": "medium",
       "predicted_scam_type": "unknown",
       "flagged": true,
       "signals": [
@@ -369,12 +369,10 @@
       "id": "G03",
       "label": "genuine",
       "scam_type": "otp_notice",
-      "predicted_risk": "high",
+      "predicted_risk": "low",
       "predicted_scam_type": "unknown",
-      "flagged": true,
-      "signals": [
-        "otp_or_pin_request"
-      ]
+      "flagged": false,
+      "signals": []
     },
     {
       "id": "G04",

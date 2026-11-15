@@ -81,13 +81,16 @@ def _compute_risk(signal_count: int, scam_type: str) -> str:
 
     Rules (conservative — errs toward higher risk for safety):
       0 signals                       → low
-      1 signal OR unknown type        → medium
+      1 signal                        → medium
       2+ signals                      → high
       Any arrest/remote-access signal → always high (checked by caller)
+
+    A single signal with no recognised scam type used to escalate to high,
+    which fired family alerts on ordinary messages; medium still flags it.
     """
     if signal_count == 0:
         return "low"
-    if signal_count == 1 and scam_type != "unknown":
+    if signal_count == 1:
         return "medium"
     return "high"
 

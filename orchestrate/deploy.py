@@ -7,19 +7,21 @@ Usage:
     python orchestrate/deploy.py
 
 Requirements:
-    - WATSONX_ORCHESTRATE_API_KEY set in .env or environment
-    - WATSONX_ORCHESTRATE_URL set in .env or environment
+    - WXO_API_KEY set in .env or environment
+    - WXO_URL set in .env or environment
     - Run from the project root directory
 
 Steps this script performs:
-    1. Activate the Orchestrate environment
+    1. Register + activate the Orchestrate environment
     2. Import the three tool functions
-    3. Deploy the agent from agent.yaml
+    3. Import the agent from agent.yaml
 """
 
 import os
+import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -51,14 +53,39 @@ if not URL:
 # ---------------------------------------------------------------------------
 
 _ORCHESTRATE = str(Path(sys.executable).parent / "orchestrate")
+_PROJECT_ROOT = Path(__file__).parent.parent
 
-def _run(args: list[str]) -> None:
+
+def _run(args: list[str], answer: str | None = None) -> None:
+    """Run an orchestrate command. *answer* is fed to any y/n prompt."""
     cmd = [_ORCHESTRATE] + args
-    print(f"\n>>> {' '.join(cmd)}")
-    result = subprocess.run(cmd, check=False)
+    # Mask the key so it never lands in a terminal log or screen recording
+    shown = ["****" if a == API_KEY else a for a in cmd]
+    print(f"\n>>> {' '.join(shown)}")
+    result = subprocess.run(cmd, check=False, input=answer, text=answer is not None)
     if result.returncode != 0:
         print(f"[ERROR] Command failed with exit code {result.returncode}")
         sys.exit(result.returncode)
+
+
+def _stage_tool_bundle(dest: Path) -> Path:
+    """
+    Copy only the Python files the tools need into *dest*.
+
+    `tools import --package-root` zips EVERY file under the root, hidden files
+    included, so pointing it at the project would upload .env, .git, .venv and
+    node_modules. Staging a clean folder keeps credentials out of the upload.
+    """
+    for rel in ("tools", "orchestrate/tools"):
+        (dest / rel).mkdir(parents=True, exist_ok=True)
+        for src in (_PROJECT_ROOT / rel).glob("*.py"):
+            shutil.copy2(src, dest / rel / src.name)
+    shutil.copy2(_PROJECT_ROOT / "orchestrate" / "__init__.py", dest / "orchestrate" / "__init__.py")
+
+    # The runtime only needs the ADK for the @tool decorator — not pytest/flask
+    reqs = dest / "requirements.txt"
+    reqs.write_text("ibm-watsonx-orchestrate>=2.20.0\n", encoding="utf-8")
+    return reqs
 
 
 # ---------------------------------------------------------------------------
@@ -67,21 +94,27 @@ def _run(args: list[str]) -> None:
 
 def main() -> None:
     agent_yaml = str(Path(__file__).parent / "agent.yaml")
-    tools_file = str(Path(__file__).parent / "tools" / "scamshield_tools.py")
 
-    # Step 1 — activate environment
-    _run([
-        "env", "activate",
-        "--env-name", "scamshield",
-        "--api-key",  API_KEY,
-        "--url",      URL,
-    ])
+    # Step 1 — register the environment; answers "Y" if it asks to update an existing one
+    _run(["env", "add", "--name", "scamshield", "--url", URL], answer="Y\n")
 
-    # Step 2 — import tools
-    _run(["tools", "import", "python", tools_file])
+    # Step 2 — activate it with the API key
+    _run(["env", "activate", "scamshield", "--api-key", API_KEY])
 
-    # Step 3 — deploy agent
-    _run(["agents", "deploy", agent_yaml])
+    # Step 3 — import tools from a clean staged bundle (see _stage_tool_bundle)
+    with tempfile.TemporaryDirectory(prefix="scamshield_bundle_") as tmp:
+        bundle = Path(tmp)
+        reqs = _stage_tool_bundle(bundle)
+        _run([
+            "tools", "import",
+            "--kind", "python",
+            "--file", str(bundle / "orchestrate" / "tools" / "scamshield_tools.py"),
+            "--requirements-file", str(reqs),
+            "--package-root", str(bundle),
+        ])
+
+    # Step 4 — import the agent definition (creates or updates it)
+    _run(["agents", "import", "--file", agent_yaml])
 
     print("\n[OK] ScamShield agent deployed successfully.")
     print("     Open watsonx Orchestrate and find 'scamshield-agent' in Agents.")

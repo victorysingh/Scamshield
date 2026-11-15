@@ -91,7 +91,7 @@ def analyse_message(
         "scam message is detected. For medium or low risk, records that no alert "
         "was needed. No real SMS is sent — writes to a local log file."
     ),
-    permission=ToolPermission.READ_ONLY,
+    permission=ToolPermission.WRITE_ONLY,
 )
 def send_family_alert(
     scam_type: str,
@@ -136,7 +136,7 @@ def send_family_alert(
         "Call this after analyse_message to keep a record. "
         "Uses synthetic message text only — never log real personal data."
     ),
-    permission=ToolPermission.READ_ONLY,
+    permission=ToolPermission.WRITE_ONLY,
 )
 def log_scam_case(
     message: str,

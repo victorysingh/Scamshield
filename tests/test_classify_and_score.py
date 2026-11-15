@@ -69,6 +69,14 @@ class TestRiskLevels:
         r = classify_and_score(msg)
         assert r["risk"] in ("medium", "low")  # may vary; not high
 
+    def test_single_signal_unknown_type_is_medium_not_high(self) -> None:
+        # One urgency word with no scam pattern must not trigger a family alert
+        msg = "Reminder: the society meeting is urgent, please attend at 6 pm."
+        r = classify_and_score(msg)
+        assert r["scam_type"] == "unknown"
+        assert r["signal_count"] == 1
+        assert r["risk"] == "medium"
+
     def test_low_risk_clean(self) -> None:
         msg = "Your monthly statement is ready. No action needed."
         r = classify_and_score(msg)

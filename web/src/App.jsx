@@ -54,7 +54,7 @@ export default function App() {
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const data = await res.json();
       setResult(data);
-    } catch (e) {
+    } catch {
       setError("Could not connect to ScamShield API. Make sure api.py is running.");
     } finally {
       setLoading(false);

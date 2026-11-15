@@ -54,6 +54,30 @@ class TestOtpOrPinRequest:
         # "Do not share" should NOT match the request pattern (verb + otp without "share ... otp" order)
         assert "otp_or_pin_request" not in _signal_names(result)
 
+    def test_do_not_share_this_otp_is_not_a_request(self) -> None:
+        # Regression: genuine login-OTP SMS was flagged HIGH and alerted family
+        msg = ("Your OTP for SynthBank login is 000000. Valid for 10 minutes. "
+               "Do not share this OTP with anyone, including bank staff.")
+        assert "otp_or_pin_request" not in _signal_names(check_red_flags(msg))
+
+    def test_never_share_your_pin_is_not_a_request(self) -> None:
+        msg = "SynthBank will never ask you to share your PIN."
+        assert "otp_or_pin_request" not in _signal_names(check_red_flags(msg))
+
+    def test_request_still_caught_after_a_warning(self) -> None:
+        # A negated phrase earlier must not hide a real request later
+        msg = "Do not panic. Share the OTP with our officer to unblock your account."
+        assert "otp_or_pin_request" in _signal_names(check_red_flags(msg))
+
+    def test_secrecy_then_request_is_caught(self) -> None:
+        # "Do not tell anyone" overlaps the request; it must not hide it
+        msg = "Do not tell anyone. Send the OTP to our officer now."
+        assert "otp_or_pin_request" in _signal_names(check_red_flags(msg))
+
+    def test_negation_with_non_filler_words_does_not_hide_request(self) -> None:
+        msg = "Do not ignore this message enter your PIN here to stay safe."
+        assert "otp_or_pin_request" in _signal_names(check_red_flags(msg))
+
 
 # ---------------------------------------------------------------------------
 # Signal 2: Urgency language
