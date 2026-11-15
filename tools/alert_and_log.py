@@ -9,9 +9,21 @@ Both return plain JSON. No real SMS or network call is made.
 
 import json
 import os
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+# Monotonic counter ensures case IDs are unique even within the same microsecond
+_counter_lock = threading.Lock()
+_case_counter: int = 0
+
+
+def _next_counter() -> int:
+    global _case_counter
+    with _counter_lock:
+        _case_counter += 1
+        return _case_counter
 
 # ---------------------------------------------------------------------------
 # File paths  (relative to project root; created if absent)
@@ -124,7 +136,7 @@ def log_case(
     """
     _ensure_data_dir()
 
-    case_id = f"CASE-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S%f')}"
+    case_id = f"CASE-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S%f')}-{_next_counter():04d}"
     timestamp = _now_iso()
 
     record: dict[str, Any] = {
