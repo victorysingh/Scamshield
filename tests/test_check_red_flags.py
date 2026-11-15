@@ -260,3 +260,49 @@ class TestReturnValueContract:
         assert isinstance(result["flagged"], bool)
         assert isinstance(result["signals"], list)
         assert isinstance(result["count"], int)
+
+
+# ---------------------------------------------------------------------------
+# Signals added after the review (digital arrest, impersonation, task scams)
+# ---------------------------------------------------------------------------
+
+class TestReviewSignals:
+    def test_digital_arrest_secrecy(self) -> None:
+        msg = "Stay on video call with our officer and do not tell anyone about this case."
+        assert "secrecy_pressure" in _signal_names(check_red_flags(msg))
+
+    def test_bank_advice_not_secrecy(self) -> None:
+        msg = "SynthBank will never ask for your PIN. Do not tell anyone your PIN or OTP."
+        assert "secrecy_pressure" not in _signal_names(check_red_flags(msg))
+
+    def test_new_number_claim(self) -> None:
+        msg = "Hi Mum, this is my new number, my phone broke."
+        assert "new_number_claim" in _signal_names(check_red_flags(msg))
+
+    def test_money_transfer_with_amount(self) -> None:
+        msg = "Please send Rs.20,000 to this account today."
+        assert "money_transfer_request" in _signal_names(check_red_flags(msg))
+
+    def test_customs_fee_demand(self) -> None:
+        msg = "Your parcel is held. Pay clearance fee to release it."
+        assert "money_transfer_request" in _signal_names(check_red_flags(msg))
+
+    def test_app_promo_is_not_money_request(self) -> None:
+        msg = "You can now send money to any UPI ID instantly with SynthPay."
+        assert "money_transfer_request" not in _signal_names(check_red_flags(msg))
+
+    def test_task_scam_reward(self) -> None:
+        msg = "Earn Rs.5000 daily by liking YouTube videos. Part-time job."
+        assert "unrealistic_reward" in _signal_names(check_red_flags(msg))
+
+    def test_short_link(self) -> None:
+        msg = "Your account is blocked. Update KYC: bit.ly/synth-kyc"
+        assert "lookalike_link" in _signal_names(check_red_flags(msg))
+
+    def test_police_verification_not_a_threat(self) -> None:
+        msg = "Police verification for your passport is scheduled on Monday at 11 am."
+        assert check_red_flags(msg)["count"] == 0
+
+    def test_bill_due_in_days_not_urgent(self) -> None:
+        msg = "Your electricity bill of Rs.1,240 is due within 3 days."
+        assert "urgency_language" not in _signal_names(check_red_flags(msg))

@@ -34,7 +34,8 @@ Team: @jp · Bengaluru
 **ScamShield** analyses a suspicious message in seconds and:
 
 1. 🔍 **Detects** scam signals — urgency language, OTP requests, arrest threats,
-   lookalike links, remote access requests
+   lookalike or short links, remote access requests, "digital arrest" secrecy,
+   new-number impersonation, money or fee requests, unrealistic rewards
 2. 🏷️ **Classifies** the scam type — Bank/KYC, Courier, Fake Official, Prize,
    Investment
 3. ⚠️ **Scores** the risk — LOW / MEDIUM / HIGH
@@ -61,7 +62,7 @@ Senior citizen pastes suspicious message
 analyse_message  send_family  log_scam
                    _alert      _case
    |
-   +-- check_red_flags     (5 signal rules)
+   +-- check_red_flags     (9 signal rules)
    +-- classify_and_score  (5 scam types, 3 risk levels)
    +-- explain_in_language (English + Kannada)
             |
@@ -169,19 +170,23 @@ registers and activates the Orchestrate environment, imports the tools
 
 | Metric | Value |
 |--------|-------|
-| **Detection rate** | **93.3%** (28 of 30 scams flagged medium or high) |
+| **Detection rate** | **100%** (30 of 30 scams flagged medium or high; was 93.3% before the review fixes) |
 | **False-alarm rate** | **0.0%** (0 of 15 genuine messages flagged; was 6.7% before the OTP-warning fix) |
 | Test set size | 45 messages |
 | Scam types covered | 5 (bank/KYC, courier, fake official, prize, investment) |
-| Signals detected | 5 (OTP request, urgency, arrest threat, lookalike link, remote access) |
+| Signals detected | 9 (OTP request, urgency, arrest threat, suspicious/short link, remote access, secrecy / 'digital arrest', new-number impersonation, money or fee request, unrealistic reward) |
 
 ⚠️ *This is a synthetic test set. Results do not represent production accuracy.*
 *The dataset was created specifically for this hackathon using made-up names,*
 *phone numbers and links — no real personal data.*
 
-**Missed cases (2/30):** Both were investment scam messages with no strong
-signal keywords — a watsonx.ai Granite model call (stubbed in code) would
-catch these in production.
+**Read this number carefully:** the rules were refined while looking at these
+same messages, so 100% is not an independent accuracy figure. In a review we
+also wrote a dozen new realistic messages the rules had never seen; the first
+version got 6 of 12 wrong (it missed 'digital arrest', 'Hi Mum, new number' and
+task scams, and flagged a passport police-verification notice). We added rules
+for those patterns. A held-out test set and a watsonx.ai Granite model call
+(stubbed in code) are the next steps for real-world coverage.
 
 ---
 

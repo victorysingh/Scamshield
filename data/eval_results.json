@@ -2,9 +2,9 @@
   "set_size": 45,
   "scam_count": 30,
   "genuine_count": 15,
-  "detected": 28,
+  "detected": 30,
   "false_alarms": 0,
-  "detection_rate": 93.3,
+  "detection_rate": 100.0,
   "false_alarm_rate": 0.0,
   "note": "Synthetic test set only. Do not claim production accuracy.",
   "results": [
@@ -84,11 +84,12 @@
       "id": "S07",
       "label": "scam",
       "scam_type": "courier_customs",
-      "predicted_risk": "medium",
+      "predicted_risk": "high",
       "predicted_scam_type": "courier_customs",
       "flagged": true,
       "signals": [
-        "lookalike_link"
+        "lookalike_link",
+        "money_transfer_request"
       ]
     },
     {
@@ -107,10 +108,11 @@
       "id": "S09",
       "label": "scam",
       "scam_type": "courier_customs",
-      "predicted_risk": "medium",
+      "predicted_risk": "high",
       "predicted_scam_type": "courier_customs",
       "flagged": true,
       "signals": [
+        "urgency_language",
         "lookalike_link"
       ]
     },
@@ -153,11 +155,12 @@
       "id": "S13",
       "label": "scam",
       "scam_type": "fake_official",
-      "predicted_risk": "medium",
+      "predicted_risk": "high",
       "predicted_scam_type": "fake_official",
       "flagged": true,
       "signals": [
-        "urgency_language"
+        "urgency_language",
+        "arrest_or_seizure_threat"
       ]
     },
     {
@@ -199,22 +202,24 @@
       "id": "S17",
       "label": "scam",
       "scam_type": "prize",
-      "predicted_risk": "medium",
+      "predicted_risk": "high",
       "predicted_scam_type": "prize",
       "flagged": true,
       "signals": [
-        "urgency_language"
+        "urgency_language",
+        "unrealistic_reward"
       ]
     },
     {
       "id": "S18",
       "label": "scam",
       "scam_type": "prize",
-      "predicted_risk": "medium",
+      "predicted_risk": "high",
       "predicted_scam_type": "prize",
       "flagged": true,
       "signals": [
-        "urgency_language"
+        "urgency_language",
+        "money_transfer_request"
       ]
     },
     {
@@ -243,41 +248,48 @@
       "id": "S21",
       "label": "scam",
       "scam_type": "investment",
-      "predicted_risk": "low",
+      "predicted_risk": "medium",
       "predicted_scam_type": "investment",
-      "flagged": false,
-      "signals": []
+      "flagged": true,
+      "signals": [
+        "unrealistic_reward"
+      ]
     },
     {
       "id": "S22",
       "label": "scam",
       "scam_type": "investment",
-      "predicted_risk": "medium",
+      "predicted_risk": "high",
       "predicted_scam_type": "investment",
       "flagged": true,
       "signals": [
-        "urgency_language"
+        "urgency_language",
+        "unrealistic_reward"
       ]
     },
     {
       "id": "S23",
       "label": "scam",
       "scam_type": "investment",
-      "predicted_risk": "medium",
+      "predicted_risk": "high",
       "predicted_scam_type": "investment",
       "flagged": true,
       "signals": [
-        "lookalike_link"
+        "lookalike_link",
+        "money_transfer_request",
+        "unrealistic_reward"
       ]
     },
     {
       "id": "S24",
       "label": "scam",
       "scam_type": "investment",
-      "predicted_risk": "low",
+      "predicted_risk": "medium",
       "predicted_scam_type": "bank_kyc",
-      "flagged": false,
-      "signals": []
+      "flagged": true,
+      "signals": [
+        "money_transfer_request"
+      ]
     },
     {
       "id": "S25",
@@ -295,11 +307,13 @@
       "id": "S26",
       "label": "scam",
       "scam_type": "courier_customs",
-      "predicted_risk": "medium",
+      "predicted_risk": "high",
       "predicted_scam_type": "courier_customs",
       "flagged": true,
       "signals": [
-        "lookalike_link"
+        "urgency_language",
+        "lookalike_link",
+        "money_transfer_request"
       ]
     },
     {
@@ -333,7 +347,8 @@
       "predicted_scam_type": "investment",
       "flagged": true,
       "signals": [
-        "remote_access_request"
+        "remote_access_request",
+        "unrealistic_reward"
       ]
     },
     {
@@ -379,7 +394,7 @@
       "label": "genuine",
       "scam_type": "otp_notice",
       "predicted_risk": "low",
-      "predicted_scam_type": "bank_kyc",
+      "predicted_scam_type": "unknown",
       "flagged": false,
       "signals": []
     },
@@ -397,7 +412,7 @@
       "label": "genuine",
       "scam_type": "delivery",
       "predicted_risk": "low",
-      "predicted_scam_type": "courier_customs",
+      "predicted_scam_type": "unknown",
       "flagged": false,
       "signals": []
     },
@@ -406,7 +421,7 @@
       "label": "genuine",
       "scam_type": "delivery",
       "predicted_risk": "low",
-      "predicted_scam_type": "investment",
+      "predicted_scam_type": "unknown",
       "flagged": false,
       "signals": []
     },
@@ -415,7 +430,7 @@
       "label": "genuine",
       "scam_type": "bank_statement",
       "predicted_risk": "low",
-      "predicted_scam_type": "bank_kyc",
+      "predicted_scam_type": "unknown",
       "flagged": false,
       "signals": []
     },
@@ -478,7 +493,7 @@
       "label": "genuine",
       "scam_type": "delivery",
       "predicted_risk": "low",
-      "predicted_scam_type": "courier_customs",
+      "predicted_scam_type": "unknown",
       "flagged": false,
       "signals": []
     }

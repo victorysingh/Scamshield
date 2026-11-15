@@ -24,7 +24,8 @@ _TYPE_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     (
         "bank_kyc",
         re.compile(
-            r"\b(kyc|know your customer|account (suspend|block|freeze|verif)|"
+            r"\b(kyc|know your customer|"
+            r"account (is |has been |will be )?(suspend|block|freez|verif)|"
             r"bank(ing)? (details|update|verif)|re-?verif|aadhar|pan card|"
             r"credit card|debit card|net ?banking|upi|ifsc)\b",
             re.IGNORECASE,
@@ -132,10 +133,13 @@ def classify_and_score(message: str) -> dict[str, Any]:
     signal_names: list[str] = [s["name"] for s in flags["signals"]]
     signal_count: int = flags["count"]
 
-    scam_type = _detect_scam_type(message)
+    # Topic words alone ("UPI", "parcel", "credit card") appear in genuine
+    # messages too; naming a scam type with no warning signs made the UI show
+    # "LOW RISK, looks genuine" next to "Bank / KYC scam".
+    scam_type = _detect_scam_type(message) if signal_count > 0 else "unknown"
 
     # Escalate to high if high-severity signals present regardless of count
-    high_severity = {"arrest_or_seizure_threat", "remote_access_request"}
+    high_severity = {"arrest_or_seizure_threat", "remote_access_request", "secrecy_pressure"}
     if high_severity.intersection(signal_names):
         risk = "high"
     else:

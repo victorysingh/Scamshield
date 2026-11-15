@@ -65,7 +65,7 @@ SAMPLES: list[dict[str, str]] = [
         ),
     },
     {
-        "label": "SCAM — Bank/KYC (Medium Risk)",
+        "label": "SCAM — Bank/KYC (High Risk)",
         "text": (
             "Dear customer, your SynthBank account KYC is incomplete. "
             "Share your OTP immediately to avoid suspension. Call 99900-00001."

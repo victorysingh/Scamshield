@@ -4,3 +4,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# Runtime logs: every analysed message is written here, so never commit them
+data/cases.jsonl
+data/alerts.jsonl

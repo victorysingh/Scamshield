@@ -43,10 +43,18 @@ def analyse() -> Any:
     if not message:
         return jsonify({"error": "message is required"}), 400
 
+    # The UI re-requests the same message when the language is switched; that
+    # call sends "record": false so it doesn't log a duplicate case or alert.
+    record = data.get("record", True) is not False
+
     result      = classify_and_score(message)
     explanation = explain_in_language(result, language)
-    alert       = alert_trusted_contact(result, contact_name="Family Member")
-    logged      = log_case(message, result)
+    if record:
+        alert  = alert_trusted_contact(result, contact_name="Family Member")
+        logged = log_case(message, result)
+    else:
+        alert  = {"alerted": result["risk"] == "high", "message_sent": ""}
+        logged = {"case_id": None}
 
     return jsonify({
         "scam_type":    result["scam_type"],

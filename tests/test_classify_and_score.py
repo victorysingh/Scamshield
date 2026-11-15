@@ -104,3 +104,20 @@ class TestReturnContract:
         r = classify_and_score(None)  # type: ignore[arg-type]
         assert r["risk"] == "low"
         assert r["flagged"] is False
+
+
+class TestReviewFixes:
+    def test_genuine_topic_words_get_no_scam_type(self) -> None:
+        # Regression: UI showed "LOW RISK, looks genuine" + "Bank / KYC scam"
+        r = classify_and_score("Reminder: your SynthBank credit card payment of Rs.3,200 is due on 20-Nov.")
+        assert r["risk"] == "low"
+        assert r["scam_type"] == "unknown"
+
+    def test_digital_arrest_is_high(self) -> None:
+        msg = ("Your Aadhaar is linked to illegal activity. Stay on video call with "
+               "our officer and do not tell anyone. Transfer funds for verification.")
+        assert classify_and_score(msg)["risk"] == "high"
+
+    def test_hi_mum_scam_is_high(self) -> None:
+        msg = "Hi Mum, this is my new number, my phone broke. Send Rs.20,000 to this account."
+        assert classify_and_score(msg)["risk"] == "high"

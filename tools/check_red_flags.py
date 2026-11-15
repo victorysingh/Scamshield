@@ -24,7 +24,8 @@ _SIGNALS: list[tuple[str, re.Pattern[str], str]] = [
     (
         "urgency_language",
         re.compile(
-            r"\b(urgent|immediately|right now|within \d+ (hours?|minutes?|seconds?|days?)|act now|last chance|expire[sd]?|deadline|limited time|do not delay|today only)\b",
+            # "within N days" is left out: genuine bills and service notices use it constantly
+            r"\b(urgent(ly)?|immediately|right now|within \d+ (hours?|minutes?|seconds?)|act now|last chance|expire[sd]?|deadline|limited time|do not delay|today only)\b",
             re.IGNORECASE,
         ),
         "Message uses time-pressure language to rush the recipient.",
@@ -32,7 +33,9 @@ _SIGNALS: list[tuple[str, re.Pattern[str], str]] = [
     (
         "arrest_or_seizure_threat",
         re.compile(
-            r"\b(arrest(ed)?|warrant|seized?|freeze|frozen|court|police|cbi|enforcement directorate|cybercrime|legal action|prosecute[d]?|case filed|fir)\b",
+            # Bare "police" is left out: genuine notices ("police verification for
+            # your passport") mention it, and it fired HIGH + a family alert
+            r"\b(arrest(ed)?|digital arrest|warrant|seized?|freeze|frozen|court|cbi|enforcement directorate|cybercrime|legal action|prosecute[d]?|case filed|fir|illegal activit(y|ies)|money laundering)\b",
             re.IGNORECASE,
         ),
         "Message threatens arrest, legal action or asset seizure.",
@@ -45,10 +48,12 @@ _SIGNALS: list[tuple[str, re.Pattern[str], str]] = [
             # OR URLs containing lookalike brand names
             r"|https?://[^\s]*(paypa1|g00gle|amaz0n|yah00|micros0ft|netf1ix|sbi[-_]?secure|hdfc[-_]?verify|axis[-_]?update)[^\s]*"
             # OR plain-text (no http) lookalike brand domains anywhere in message
-            r"|\b(paypa1|g00gle|amaz0n|yah00|micros0ft|netf1ix)\.(com|net|org|in)\b",
+            r"|\b(paypa1|g00gle|amaz0n|yah00|micros0ft|netf1ix)\.(com|net|org|in)\b"
+            # OR link shorteners, which hide the real destination
+            r"|\b(bit\.ly|tinyurl\.com|goo\.gl|t\.ly|cutt\.ly|is\.gd|rb\.gy|shorturl\.at)/\S+",
             re.IGNORECASE,
         ),
-        "Message contains a link that mimics a trusted brand or uses a suspicious domain.",
+        "Message contains a link that mimics a trusted brand, uses a suspicious domain or hides its destination.",
     ),
     (
         "remote_access_request",
@@ -57,6 +62,53 @@ _SIGNALS: list[tuple[str, re.Pattern[str], str]] = [
             re.IGNORECASE,
         ),
         "Message requests remote access to the recipient's device.",
+    ),
+    (
+        # "Digital arrest" scams keep the victim isolated on a call and silent.
+        # The lookahead skips bank advice like "do not tell anyone your PIN".
+        "secrecy_pressure",
+        re.compile(
+            r"\b((do not|don't|dont) (tell|inform) (anyone|anybody|your family|family)(?!.{0,20}\b(otp|pin|password|cvv)\b)"
+            r"|keep (this|it) (secret|confidential)"
+            r"|stay on (the |this )?(video )?call"
+            r"|(do not|don't) (disconnect|cut|end) (the|this) call)\b",
+            re.IGNORECASE,
+        ),
+        "Message tells you to keep it secret or stay on a call, a common 'digital arrest' tactic.",
+    ),
+    (
+        "new_number_claim",
+        re.compile(
+            r"\b(this is my new number|my new number|changed my number|my (old )?phone (broke|is broken|got lost|is lost|is not working))\b",
+            re.IGNORECASE,
+        ),
+        "Message claims to be someone you know writing from a new number.",
+    ),
+    (
+        "money_transfer_request",
+        re.compile(
+            # A specific amount, OR money directed somewhere specific / for a
+            # pretext. Plain "send money to any UPI ID" (a genuine app promo) is not enough.
+            r"\b(send|transfer|deposit)\b.{0,30}(\brs\.?\s?\d|₹\s?\d)"
+            r"|\b(send|transfer|deposit)\b.{0,15}\b(money|funds|amount)\b.{0,25}"
+            r"\b(to (this|my|our|the following)|for verification|immediately|urgently|now)\b"
+            # OR a fee demanded to release a parcel, prize or account
+            r"|\bpay\b.{0,20}\b(clearance|customs|release|processing|registration|verification) (fee|charges?)\b",
+            re.IGNORECASE,
+        ),
+        "Message asks you to send or transfer money.",
+    ),
+    (
+        "unrealistic_reward",
+        re.compile(
+            r"\b(you('ve| have)? won|lucky draw|lottery|jackpot"
+            r"|guaranteed.{0,25}(returns?|profit)|double your money"
+            r"|\d+\s?% (daily|weekly|monthly) (returns?|profit)"
+            r"|earn (rs\.?|₹)\s?[\d,]+ (daily|per day|a day)"
+            r"|part[- ]time job|like (youtube )?videos)",
+            re.IGNORECASE,
+        ),
+        "Message promises an unrealistic prize, profit or easy income.",
     ),
 ]
 

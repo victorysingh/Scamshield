@@ -30,6 +30,10 @@ Judging is 5 points each for Completeness and Feasibility, Creativity and Innova
 
 ## 3. Who does what
 
+> **Update, Nov 16:** Bobcoins ran out before the end. The final rounds of bug
+> fixes (detection rules, deploy script, API and UI fixes) were written by
+> Claude and are disclosed row by row in `docs/story_log.md` and in the deck.
+
 - **Bob builds all submitted code.** The rules require a prototype built with Bob and a Bob story, so Claude does not write code that goes into the repo.
 - **Claude (this chat) writes the spec, test messages, deck text, problem statement and video script.** You review everything.
 - **You run Bob and watsonx Orchestrate,** commit often so the history shows work inside the Hackathon Period, record the video, and submit.

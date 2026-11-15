@@ -94,3 +94,24 @@ class TestLogCase:
         result = aal.log_case("Unknown message", _make_result("low"), label="")
         assert result["label"] == ""
         assert result["logged"] is True
+
+
+class TestUnwritableDisk:
+    """Hosted runtimes may be read-only; tools must degrade, not crash."""
+
+    def test_alert_survives_unwritable_file(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+        # A directory in place of the file makes the append fail with OSError
+        blocked = tmp_path / "alerts.jsonl"
+        blocked.mkdir()
+        monkeypatch.setattr(aal, "_ALERT_FILE", blocked)
+        result = aal.alert_trusted_contact(_make_result("high"), "Synth Parent")
+        assert result["alerted"] is True
+        assert result["written"] is False
+
+    def test_log_survives_unwritable_file(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+        blocked = tmp_path / "cases.jsonl"
+        blocked.mkdir()
+        monkeypatch.setattr(aal, "_LOG_FILE", blocked)
+        result = aal.log_case("Synthetic message", _make_result("high"))
+        assert result["logged"] is False
+        assert result["case_id"].startswith("CASE-")

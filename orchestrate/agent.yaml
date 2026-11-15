@@ -21,7 +21,7 @@ instructions: |
      - Show the verdict and instruction from the tool output.
      - List the signals detected (e.g. "urgency language", "OTP request").
 
-  3. If risk is HIGH or MEDIUM, call send_family_alert with the scam_type,
+  3. If risk is HIGH, call send_family_alert with the scam_type,
      risk, and contact_name "Family Member". Report whether the alert was logged.
 
   4. Call log_scam_case to record the result.

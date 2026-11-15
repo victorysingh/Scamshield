@@ -34,8 +34,19 @@ _ALERT_FILE = _DATA_DIR / "alerts.jsonl"
 _LOG_FILE = _DATA_DIR / "cases.jsonl"
 
 
-def _ensure_data_dir() -> None:
-    _DATA_DIR.mkdir(parents=True, exist_ok=True)
+def _append_line(path: Path, line: str) -> bool:
+    """
+    Append one JSON line; return False instead of raising if the disk is not
+    writable. Hosted runtimes such as watsonx Orchestrate may mount the tool
+    package read-only, and a failed log must never break the scam verdict.
+    """
+    try:
+        _DATA_DIR.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as fh:
+            fh.write(line + "\n")
+        return True
+    except OSError:
+        return False
 
 
 def _now_iso() -> str:
@@ -71,9 +82,8 @@ def alert_trusted_contact(
         risk         (str)
         message_sent (str)  – the simulated alert text
         timestamp    (str)
+        written      (bool) – False if the alert file could not be written
     """
-    _ensure_data_dir()
-
     risk: str = result.get("risk", "low")
     scam_type: str = result.get("scam_type", "unknown")
     alerted = risk == "high"
@@ -97,9 +107,7 @@ def alert_trusted_contact(
         "message_sent": message_sent,
     }
 
-    with _ALERT_FILE.open("a", encoding="utf-8") as fh:
-        fh.write(json.dumps(record) + "\n")
-
+    record["written"] = _append_line(_ALERT_FILE, json.dumps(record))
     return record
 
 
@@ -127,15 +135,13 @@ def log_case(
     Returns
     -------
     dict with keys:
-        logged     (bool)
+        logged     (bool) – False if the log file could not be written
         case_id    (str)
         timestamp  (str)
         risk       (str)
         scam_type  (str)
         label      (str)
     """
-    _ensure_data_dir()
-
     case_id = f"CASE-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S%f')}-{_next_counter():04d}"
     timestamp = _now_iso()
 
@@ -150,11 +156,10 @@ def log_case(
         "label": label,
     }
 
-    with _LOG_FILE.open("a", encoding="utf-8") as fh:
-        fh.write(json.dumps(record, ensure_ascii=False) + "\n")
+    logged = _append_line(_LOG_FILE, json.dumps(record, ensure_ascii=False))
 
     return {
-        "logged": True,
+        "logged": logged,
         "case_id": case_id,
         "timestamp": timestamp,
         "risk": record["risk"],

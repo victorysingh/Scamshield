@@ -58,8 +58,9 @@ python orchestrate/deploy.py
 
 ## Results
 
-On a synthetic set of 45 messages (30 scam, 15 genuine): **93.3% detection**
-(28/30 flagged medium or high) and **0.0% false alarms** (0/15). The set is
+On a synthetic set of 45 messages (30 scam, 15 genuine): **100% detection**
+(30/30 flagged medium or high) and **0.0% false alarms** (0/15). The rules were
+refined using these same messages, so this is not an independent measure. The set is
 small and synthetic, so this is not a production accuracy figure.
 
 ## Rules
