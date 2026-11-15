@@ -1,5 +1,7 @@
 # ScamShield
 
+**GitHub:** https://github.com/victorysingh/Scamshield
+
 A Python 3.11 toolkit for detecting scam and fraud patterns in messages.
 
 ## Project Structure

@@ -34,12 +34,16 @@ if _ENV_FILE.exists():
             key, _, value = line.partition("=")
             os.environ.setdefault(key.strip(), value.strip())
 
-API_KEY = os.environ.get("WATSONX_ORCHESTRATE_API_KEY", "")
-URL     = os.environ.get("WATSONX_ORCHESTRATE_URL", "")
+# Support both env var names
+API_KEY = os.environ.get("WXO_API_KEY") or os.environ.get("WATSONX_ORCHESTRATE_API_KEY", "")
+URL     = os.environ.get("WXO_URL") or os.environ.get("WATSONX_ORCHESTRATE_URL", "")
 
-if not API_KEY or not URL:
-    print("[ERROR] Set WATSONX_ORCHESTRATE_API_KEY and WATSONX_ORCHESTRATE_URL")
-    print("        in a .env file or as environment variables before deploying.")
+if not API_KEY:
+    print("[ERROR] Set WXO_API_KEY in your .env file before deploying.")
+    sys.exit(1)
+if not URL:
+    print("[ERROR] Set WXO_URL in your .env file before deploying.")
+    print("        Example: WXO_URL=https://api.us-east-1.watson-orchestrate.ibm.com/instances/<id>")
     sys.exit(1)
 
 # ---------------------------------------------------------------------------
