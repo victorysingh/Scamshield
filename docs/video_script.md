@@ -74,16 +74,25 @@ Do not open `.env` on screen.
 
 ## 1:50–2:30 · The Bob story
 
-**Screen:** your real screen recordings of IBM Bob sessions (required), then scroll `docs/story_log.md`.
+**Screen:** `4_bob_session.webm` (about 41 s). Part 1 is the Task 2 prompt re-run in
+an empty folder for this video, captioned as a re-run. Part 2 scrolls `docs/story_log.md`.
 
-> IBM Bob built ScamShield task by task: the project scaffold, red-flag rules,
-> the classifier, the Kannada explainer, the alert and log tools, the
-> Orchestrate agent and the web interface. We reviewed every step. Bob's first
-> red-flag rules failed two of their own tests — "within 24 hours" wasn't
-> matched, and plain-text lookalike links slipped through — and we fixed them
-> together. Later we caught case IDs colliding within the same microsecond.
-> When our Bobcoins ran out, we used Claude for the final review fixes and UI
-> polish, and every one of those changes is disclosed in our story log.
+**Over part 1, the Bob re-run (0:00–0:25 of the clip):**
+
+> IBM Bob built ScamShield task by task: the scaffold, the red-flag rules, the
+> classifier, the Kannada explainer, the alert and log tools, the Orchestrate
+> agent and the web interface. Here we re-ran the red-flag task for this video:
+> Bob writes the rules and 33 tests, and they pass.
+
+**Over part 2, the story-log scroll (0:25–0:41):**
+
+> In the original session on 14 November, two of those tests failed —
+> "within 24 hours" wasn't matched, and plain-text lookalike links slipped
+> through — and we fixed them together. When our Bobcoins ran out, Claude did
+> the final fixes and UI polish, and every change is disclosed in this log.
+
+Do not describe part 1 as the original build: the footage passes 33/33 on the
+first try, so the "two tests failed" line belongs over the story log only.
 
 ---
 
