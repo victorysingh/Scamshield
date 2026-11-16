@@ -65,7 +65,7 @@ Record **one** of these, depending on whether your Orchestrate access was approv
 
 > The same three tools are packaged as a watsonx Orchestrate agent using the
 > Agent Development Kit: here is the agent definition and the tool functions.
-> Our Orchestrate access was still awaiting approval when we recorded this, so
+> Our Orchestrate instance was still being activated when we recorded this, so
 > deployment is ready as one command: `python orchestrate/deploy.py`.
 
 Do not open `.env` on screen.
